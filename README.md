@@ -29,6 +29,7 @@ Provide care instructions
 📁 Suggested Project Structure
 Code
 veterinary-ai-app/
+veterinary-ai-app/
 ├── frontend/                    # React.js application
 │   ├── src/
 │   │   ├── components/
