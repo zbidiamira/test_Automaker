@@ -19,13 +19,14 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.21.1",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "mongoose": "^8.8.1",
-    "bcryptjs": "^2.4.3",
+    "express": "^4.21.1",
+    "express-validator": "^7.2.0",
     "jsonwebtoken": "^9.0.2",
-    "express-validator": "^7.2.0"
+    "mongoose": "^8.8.1",
+    "openai": "^6.17.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"
