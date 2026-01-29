@@ -9,6 +9,8 @@ import RegisterPage from './pages/RegisterPage'
 import DashboardPage from './pages/DashboardPage'
 import AnimalsPage from './pages/AnimalsPage'
 import AnimalDetailPage from './pages/AnimalDetailPage'
+import HealthHistoryPage from './pages/HealthHistoryPage'
+import AllHealthRecordsPage from './pages/AllHealthRecordsPage'
 
 function App() {
   return (
@@ -44,6 +46,24 @@ function App() {
             element={
               <ProtectedRoute>
                 <AnimalDetailPage />
+              </ProtectedRoute>
+            } 
+          />
+          
+          {/* Health Records Routes */}
+          <Route 
+            path="/animals/:animalId/health" 
+            element={
+              <ProtectedRoute>
+                <HealthHistoryPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/health-records" 
+            element={
+              <ProtectedRoute>
+                <AllHealthRecordsPage />
               </ProtectedRoute>
             } 
           />
