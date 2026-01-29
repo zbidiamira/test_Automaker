@@ -7,6 +7,8 @@ import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import DashboardPage from './pages/DashboardPage'
+import AnimalsPage from './pages/AnimalsPage'
+import AnimalDetailPage from './pages/AnimalDetailPage'
 
 function App() {
   return (
@@ -28,9 +30,25 @@ function App() {
             } 
           />
           
+          {/* Animals Routes */}
+          <Route 
+            path="/animals" 
+            element={
+              <ProtectedRoute>
+                <AnimalsPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/animals/:id" 
+            element={
+              <ProtectedRoute>
+                <AnimalDetailPage />
+              </ProtectedRoute>
+            } 
+          />
+          
           {/* More Protected Routes - Coming in later PRs */}
-          {/* <Route path="/animals" element={<ProtectedRoute><AnimalsPage /></ProtectedRoute>} /> */}
-          {/* <Route path="/animals/:id" element={<ProtectedRoute><AnimalDetailPage /></ProtectedRoute>} /> */}
           {/* <Route path="/diagnosis" element={<ProtectedRoute><DiagnosisPage /></ProtectedRoute>} /> */}
           
           {/* 404 Page */}
