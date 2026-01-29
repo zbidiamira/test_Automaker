@@ -11,6 +11,7 @@ import AnimalsPage from './pages/AnimalsPage'
 import AnimalDetailPage from './pages/AnimalDetailPage'
 import HealthHistoryPage from './pages/HealthHistoryPage'
 import AllHealthRecordsPage from './pages/AllHealthRecordsPage'
+import DiagnosisPage from './pages/DiagnosisPage'
 
 function App() {
   return (
@@ -69,7 +70,14 @@ function App() {
           />
           
           {/* More Protected Routes - Coming in later PRs */}
-          {/* <Route path="/diagnosis" element={<ProtectedRoute><DiagnosisPage /></ProtectedRoute>} /> */}
+          <Route 
+            path="/diagnosis" 
+            element={
+              <ProtectedRoute>
+                <DiagnosisPage />
+              </ProtectedRoute>
+            } 
+          />
           
           {/* 404 Page */}
           <Route path="*" element={<NotFound />} />
