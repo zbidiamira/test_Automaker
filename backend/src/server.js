@@ -3,6 +3,9 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/database.js';
 
+// Import routes
+import authRoutes from './routes/auth.js';
+
 // Load environment variables
 dotenv.config();
 
@@ -37,8 +40,8 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// API Routes (to be added in later PRs)
-// app.use('/api/auth', authRoutes);
+// API Routes
+app.use('/api/auth', authRoutes);
 // app.use('/api/animals', animalRoutes);
 // app.use('/api/health', healthRoutes);
 // app.use('/api/ai', aiRoutes);
