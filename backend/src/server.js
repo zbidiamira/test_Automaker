@@ -5,6 +5,7 @@ import connectDB from './config/database.js';
 
 // Import routes
 import authRoutes from './routes/auth.js';
+import animalRoutes from './routes/animals.js';
 
 // Load environment variables
 dotenv.config();
@@ -42,7 +43,7 @@ app.get('/api/health', (req, res) => {
 
 // API Routes
 app.use('/api/auth', authRoutes);
-// app.use('/api/animals', animalRoutes);
+app.use('/api/animals', animalRoutes);
 // app.use('/api/health', healthRoutes);
 // app.use('/api/ai', aiRoutes);
 
