@@ -1,9 +1,21 @@
 import OpenAI from 'openai';
 
-// Initialize OpenAI client
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Initialize OpenAI client lazily (to ensure env vars are loaded)
+let openai = null;
+let initialized = false;
+
+const initializeOpenAI = () => {
+  if (initialized) return;
+  initialized = true;
+  
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (apiKey) {
+    openai = new OpenAI({ apiKey });
+    console.log('✅ OpenAI API configured successfully');
+  } else {
+    console.warn('⚠️  OpenAI API key not configured. AI features will use mock responses.');
+  }
+};
 
 // Veterinary diagnostic system prompt
 const SYSTEM_PROMPT = `You are an expert veterinary diagnostic assistant. Your role is to help pet owners understand potential health issues based on symptoms they observe in their pets.
@@ -72,6 +84,14 @@ export const analyzeSymptoms = async ({
   additionalInfo,
   duration,
 }) => {
+  // Initialize OpenAI on first use
+  initializeOpenAI();
+  
+  // Return mock response if OpenAI is not configured
+  if (!openai) {
+    return getMockDiagnosis(species, symptoms);
+  }
+
   try {
     // Build the user prompt
     const userPrompt = buildUserPrompt({
@@ -188,6 +208,9 @@ const buildUserPrompt = ({
  * @returns {Promise<object>} Care recommendations
  */
 export const getCareRecommendations = async (species, condition) => {
+  // Initialize OpenAI on first use
+  initializeOpenAI();
+  
   try {
     const prompt = `Provide detailed care recommendations for a ${species} diagnosed with or showing signs of "${condition}".
 
@@ -244,7 +267,47 @@ Respond in JSON format:
  * @returns {boolean}
  */
 export const isConfigured = () => {
-  return !!process.env.OPENAI_API_KEY;
+  initializeOpenAI();
+  return !!openai;
+};
+
+/**
+ * Generate mock diagnosis when OpenAI is not configured
+ */
+const getMockDiagnosis = (species, symptoms) => {
+  const symptomList = Array.isArray(symptoms) ? symptoms.join(', ') : symptoms;
+  
+  return {
+    possibleConditions: [
+      {
+        name: 'General Health Check Recommended',
+        probability: 'Medium',
+        description: `Based on the symptoms (${symptomList}), a vet exam is recommended.`,
+        commonIn: species || 'All pets',
+      },
+    ],
+    recommendedActions: [
+      'Monitor your pet for the next 24-48 hours',
+      'Ensure access to fresh water',
+      'Schedule a vet appointment if symptoms persist',
+    ],
+    medications: [],
+    warningSignsToWatch: [
+      'Difficulty breathing',
+      'Severe lethargy',
+      'Refusing food/water for 24+ hours',
+    ],
+    homeCareTips: [
+      'Keep your pet comfortable and warm',
+      'Avoid strenuous activity',
+    ],
+    urgency: 'Medium',
+    shouldSeeVet: true,
+    timeframe: 'Within 24-48 hours if symptoms persist',
+    disclaimer: '⚠️ DEMO MODE: Configure OPENAI_API_KEY in .env for real AI diagnosis. This is not a substitute for professional veterinary care.',
+    analyzedAt: new Date().toISOString(),
+    model: 'mock-demo',
+  };
 };
 
 export default {

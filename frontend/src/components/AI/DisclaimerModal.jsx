@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import { Modal, Button } from '../Common';
 
 const DisclaimerModal = ({ isOpen, onAccept, onDecline }) => {
+  const [isChecked, setIsChecked] = useState(false);
+
   return (
     <Modal
       isOpen={isOpen}
@@ -76,9 +79,8 @@ const DisclaimerModal = ({ isOpen, onAccept, onDecline }) => {
               type="checkbox"
               id="disclaimer-checkbox"
               className="mt-1 w-5 h-5 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
-              onChange={(e) => {
-                document.getElementById('accept-btn').disabled = !e.target.checked;
-              }}
+              checked={isChecked}
+              onChange={(e) => setIsChecked(e.target.checked)}
             />
             <span className="text-sm text-gray-700">
               I understand that this AI tool provides preliminary assessments only
@@ -95,7 +97,7 @@ const DisclaimerModal = ({ isOpen, onAccept, onDecline }) => {
           <Button
             id="accept-btn"
             onClick={onAccept}
-            disabled
+            disabled={!isChecked}
           >
             I Understand, Continue
           </Button>
