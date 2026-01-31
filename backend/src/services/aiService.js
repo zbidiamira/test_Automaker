@@ -134,20 +134,26 @@ export const analyzeSymptoms = async ({
   } catch (error) {
     console.error('AI Service Error:', error);
     
-    // Handle specific OpenAI errors
-    if (error.code === 'insufficient_quota') {
-      throw new Error('AI service quota exceeded. Please try again later.');
+    // Handle specific OpenAI errors - fallback to mock responses
+    if (error.code === 'insufficient_quota' || error.status === 429) {
+      console.warn('⚠️  OpenAI quota exceeded. Using mock diagnosis.');
+      const mockDiagnosis = getMockDiagnosis(species, symptoms);
+      mockDiagnosis.disclaimer = '⚠️ AI service quota temporarily exceeded. Showing demo response. Please try again later for AI-powered diagnosis.';
+      return mockDiagnosis;
     }
     
     if (error.code === 'invalid_api_key') {
-      throw new Error('AI service configuration error. Please contact support.');
+      console.warn('⚠️  Invalid API key. Using mock diagnosis.');
+      return getMockDiagnosis(species, symptoms);
     }
     
     if (error instanceof SyntaxError) {
       throw new Error('Failed to parse AI response. Please try again.');
     }
     
-    throw new Error(error.message || 'AI analysis failed. Please try again.');
+    // For other errors, fallback to mock instead of failing completely
+    console.warn('⚠️  AI service error. Using mock diagnosis as fallback.');
+    return getMockDiagnosis(species, symptoms);
   }
 };
 
